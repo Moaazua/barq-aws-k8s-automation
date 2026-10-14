@@ -4,6 +4,7 @@
 !.env.example
 *.pem
 *.key
+.aws/
 
 # Terraform
 **/.terraform/
