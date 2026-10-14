@@ -1,0 +1,1 @@
+"""BARQ assessment starter application."""
