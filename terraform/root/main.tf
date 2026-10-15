@@ -61,3 +61,18 @@ module "rds" {
   db_instance_class = var.db_instance_class
   db_password       = var.db_password
 }
+
+# Generate Ansible Inventory Automatically
+resource "local_file" "ansible_inventory" {
+  filename = "${path.module}/inventory.generated.ini"
+
+  content = <<-EOT
+    [control_plane]
+    ${module.ec2.control_plane_public_ip} ansible_user=ubuntu
+
+    [workers]
+    ${module.ec2.worker_public_ip} ansible_user=ubuntu
+  EOT
+
+  file_permission = "0600"
+}

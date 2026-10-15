@@ -43,3 +43,19 @@ output "rds_port" {
 output "rds_db_name" {
   value = module.rds.rds_db_name
 }
+
+output "control_plane_public_ip" {
+  value = module.ec2.control_plane_public_ip
+}
+
+output "control_plane_private_ip" {
+  value = module.ec2.control_plane_private_ip
+}
+
+output "worker_public_ip" {
+  value = module.ec2.worker_public_ip
+}
+
+output "worker_private_ip" {
+  value = module.ec2.worker_private_ip
+}
