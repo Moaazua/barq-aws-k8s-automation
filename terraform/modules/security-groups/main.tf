@@ -134,3 +134,15 @@ resource "aws_vpc_security_group_egress_rule" "worker_egress" {
 
   description = "Allow outbound traffic from Worker"
 }
+
+# Allow access to BARQ application via NodePort
+resource "aws_vpc_security_group_ingress_rule" "worker_nodeport" {
+  security_group_id = aws_security_group.worker.id
+
+  cidr_ipv4   = var.allowed_ssh_cidr
+  from_port   = 30080
+  to_port     = 30080
+  ip_protocol = "tcp"
+
+  description = "Allow BARQ application access via NodePort"
+}

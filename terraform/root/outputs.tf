@@ -17,3 +17,13 @@ output "igw_id" {
   description = "ID of the Internet Gateway"
   value       = module.vpc.igw_id
 }
+
+output "control_plane_instance_profile_name" {
+  description = "Control Plane Instance Profile Name"
+  value       = module.iam.control_plane_instance_profile_name
+}
+
+output "worker_instance_profile_name" {
+  description = "Worker Instance Profile Name"
+  value       = module.iam.worker_instance_profile_name
+}
