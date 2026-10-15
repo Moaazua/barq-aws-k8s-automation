@@ -10,3 +10,5 @@ private_db_subnet_2_cidr = "10.0.3.0/24"
 
 private_db_az_1 = "eu-central-1a"
 private_db_az_2 = "eu-central-1b"
+
+allowed_ssh_cidr = "203.0.113.10/32"

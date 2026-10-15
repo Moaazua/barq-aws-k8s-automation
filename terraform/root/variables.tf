@@ -37,3 +37,8 @@ variable "private_db_az_2" {
   description = "Availability Zone for private DB subnet 2"
   type        = string
 }
+
+variable "allowed_ssh_cidr" {
+  description = "Approved public IP CIDR for SSH access"
+  type        = string
+}
