@@ -6,3 +6,6 @@ barq-key
 .terraform/
 terraform.tfvars
 *.retry
+
+# Ansible (generated inventory contains instance IPs)
+ansible/inventory/hosts.ini

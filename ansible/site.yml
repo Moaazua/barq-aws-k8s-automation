@@ -1,3 +1,16 @@
+- name: Preflight (fresh EC2 instances)
+  hosts: k8s
+  gather_facts: false
+  tasks:
+    - name: Wait for SSH to become available
+      ansible.builtin.wait_for_connection:
+        timeout: 300
+
+    - name: Wait for cloud-init to finish (avoids apt lock errors)
+      ansible.builtin.command: cloud-init status --wait
+      changed_when: false
+      failed_when: false
+
 - name: Prepare all nodes
   hosts: k8s
   roles: [common, containerd, kube_packages]
