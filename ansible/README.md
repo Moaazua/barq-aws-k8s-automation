@@ -31,6 +31,16 @@ output "worker_public_ip"         { value = module.ec2.worker_public_ip }
 output "worker_private_ip"        { value = module.ec2.worker_private_ip }
 ```
 
+## Structure
+```
+ansible/
+├── ansible.cfg  requirements.yml  site.yml  README.md
+├── group_vars/all.yml            # k8s_minor, pod_cidr, flannel_manifest
+├── inventory/hosts.ini.example   # real hosts.ini is generated, not committed
+├── scripts/generate_inventory.sh
+└── tasks/                        # common, containerd, kube_packages, control_plane, worker
+```
+
 ## Notes
 - `kubeadm init` uses the control plane **private** IP; the public IP is added to the API cert SANs.
 - If you stop/start the instances the public IPs change: re-run `generate_inventory.sh`.
