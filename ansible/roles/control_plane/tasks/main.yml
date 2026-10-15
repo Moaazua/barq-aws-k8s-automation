@@ -1,0 +1,34 @@
+- name: Check if cluster is already initialized
+  ansible.builtin.stat:
+    path: /etc/kubernetes/admin.conf
+  register: admin_conf
+
+- name: kubeadm init (using the private IP)
+  ansible.builtin.command: >
+    kubeadm init
+    --apiserver-advertise-address={{ private_ip }}
+    --apiserver-cert-extra-sans={{ ansible_host }}
+    --pod-network-cidr={{ pod_cidr }}
+  when: not admin_conf.stat.exists
+
+- name: Create .kube dir for the SSH user
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user | default('ubuntu') }}/.kube"
+    state: directory
+    owner: "{{ ansible_user | default('ubuntu') }}"
+    mode: "0755"
+
+- name: Copy admin kubeconfig
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{ ansible_user | default('ubuntu') }}/.kube/config"
+    remote_src: true
+    owner: "{{ ansible_user | default('ubuntu') }}"
+    mode: "0600"
+
+- name: Install Flannel CNI
+  ansible.builtin.command: kubectl apply -f {{ flannel_manifest }}
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: flannel
+  changed_when: "'created' in flannel.stdout"

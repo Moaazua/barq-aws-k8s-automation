@@ -1,0 +1,36 @@
+- name: Prepare all nodes
+  hosts: k8s
+  roles: [common, containerd, kube_packages]
+
+- name: Initialize control plane
+  hosts: control_plane
+  roles: [control_plane]
+
+- name: Join workers
+  hosts: workers
+  roles: [worker]
+
+- name: Verify cluster
+  hosts: control_plane
+  tasks:
+    - name: Wait until all nodes are Ready
+      ansible.builtin.shell: >
+        kubectl get nodes --no-headers | awk '{print $2}' | grep -vc '^Ready$' || true
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: not_ready
+      until: not_ready.stdout | trim == "0"
+      retries: 30
+      delay: 10
+      changed_when: false
+
+    - name: Show nodes
+      ansible.builtin.command: kubectl get nodes -o wide
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: nodes
+      changed_when: false
+
+    - name: Print nodes
+      ansible.builtin.debug:
+        var: nodes.stdout_lines
