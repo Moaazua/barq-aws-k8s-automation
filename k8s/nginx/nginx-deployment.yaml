@@ -29,13 +29,13 @@ spec:
               memory: 128Mi
           readinessProbe:
             httpGet:
-              path: /
+              path: /nginx-health
               port: http
             initialDelaySeconds: 3
             periodSeconds: 5
           livenessProbe:
             httpGet:
-              path: /
+              path: /nginx-health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 10
