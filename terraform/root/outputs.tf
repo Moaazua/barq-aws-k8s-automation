@@ -28,3 +28,18 @@ output "worker_instance_profile_name" {
   value       = module.iam.worker_instance_profile_name
 }
 
+output "rds_endpoint" {
+  value = module.rds.rds_endpoint
+}
+
+output "rds_address" {
+  value = module.rds.rds_address
+}
+
+output "rds_port" {
+  value = module.rds.rds_port
+}
+
+output "rds_db_name" {
+  value = module.rds.rds_db_name
+}

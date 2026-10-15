@@ -49,3 +49,15 @@ module "ec2" {
   control_plane_instance_profile_name = module.iam.control_plane_instance_profile_name
   worker_instance_profile_name        = module.iam.worker_instance_profile_name
 }
+#########################
+# RDS PostgreSQL Module #
+#########################
+module "rds" {
+  source = "../modules/rds"
+
+  private_db_subnet_ids = module.vpc.private_db_subnet_ids
+  rds_sg_id             = module.security_groups.rds_sg_id
+
+  db_instance_class = var.db_instance_class
+  db_password       = var.db_password
+}

@@ -55,3 +55,15 @@ variable "key_name" {
   description = "Existing EC2 Key Pair name"
   type        = string
 }
+
+variable "db_instance_class" {
+  description = "RDS PostgreSQL instance class"
+  type        = string
+}
+
+variable "db_password" {
+  description = "PostgreSQL master password"
+  type        = string
+  sensitive   = true
+}
+
