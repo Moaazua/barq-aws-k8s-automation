@@ -42,3 +42,16 @@ variable "allowed_ssh_cidr" {
   description = "Approved public IP CIDR for SSH access"
   type        = string
 }
+
+variable "control_plane_instance_type" {
+  type = string
+}
+
+variable "worker_instance_type" {
+  type = string
+}
+
+variable "key_name" {
+  description = "Existing EC2 Key Pair name"
+  type        = string
+}

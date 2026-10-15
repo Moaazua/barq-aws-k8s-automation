@@ -27,3 +27,4 @@ output "worker_instance_profile_name" {
   description = "Worker Instance Profile Name"
   value       = module.iam.worker_instance_profile_name
 }
+

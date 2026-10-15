@@ -1,5 +1,5 @@
 ######################################
-##### VPC-Module ########################
+##### VPC-Module #####################
 ######################################
 module "vpc" {
   source = "../modules/vpc"
@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 ######################################
-##### security-Module ########################
+##### security-Module ################
 ######################################
 # Security Groups Module
 module "security_groups" {
@@ -25,9 +25,27 @@ module "security_groups" {
 }
 
 ######################################
-##### IAM-Module ########################
+##### IAM-Module #####################
 ######################################
 # IAM Module
 module "iam" {
   source = "../modules/iam"
+}
+##############################
+# EC2 Module #################
+##############################
+module "ec2" {
+  source = "../modules/ec2"
+
+  control_plane_instance_type = var.control_plane_instance_type
+  worker_instance_type        = var.worker_instance_type
+
+  public_subnet_id    = module.vpc.public_subnet_id
+  control_plane_sg_id = module.security_groups.control_plane_sg_id
+  worker_sg_id        = module.security_groups.worker_sg_id
+
+  key_name = var.key_name
+
+  control_plane_instance_profile_name = module.iam.control_plane_instance_profile_name
+  worker_instance_profile_name        = module.iam.worker_instance_profile_name
 }
