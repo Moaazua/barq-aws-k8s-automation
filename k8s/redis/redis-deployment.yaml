@@ -16,6 +16,12 @@ spec:
       containers:
         - name: redis
           image: redis:7-alpine
+          args:
+            - "--appendonly"
+            - "yes"
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
           ports:
             - name: redis
               containerPort: 6379
@@ -40,3 +46,7 @@ spec:
                 - ping
             initialDelaySeconds: 15
             periodSeconds: 10
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-pvc
