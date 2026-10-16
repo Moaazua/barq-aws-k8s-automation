@@ -17,8 +17,8 @@ export BARQ_SSH_KEY=~/.ssh/barq-k8s-key.pem     # path to your key
 ./scripts/generate_inventory.sh                  # builds inventory/hosts.ini from `terraform output`
 
 ansible all -m ping                              # both hosts must answer "pong"
-ansible-playbook site.yml                        # first run: builds the cluster
-ansible-playbook site.yml                        # re-run: should report changed=0 (or near 0)
+ansible-playbook k8s-cluster-playbook.yml                        # first run: builds the cluster
+ansible-playbook k8s-cluster-playbook.yml                        # re-run: should report changed=0 (or near 0)
 ```
 
 ## Required Terraform outputs (terraform/root/outputs.tf)
@@ -29,16 +29,6 @@ output "control_plane_public_ip"  { value = module.ec2.control_plane_public_ip }
 output "control_plane_private_ip" { value = module.ec2.control_plane_private_ip }
 output "worker_public_ip"         { value = module.ec2.worker_public_ip }
 output "worker_private_ip"        { value = module.ec2.worker_private_ip }
-```
-
-## Structure
-```
-ansible/
-├── ansible.cfg  requirements.yml  site.yml  README.md
-├── group_vars/all.yml            # k8s_minor, pod_cidr, flannel_manifest
-├── inventory/hosts.ini.example   # real hosts.ini is generated, not committed
-├── scripts/generate_inventory.sh
-└── tasks/                        # common, containerd, kube_packages, control_plane, worker
 ```
 
 ## Notes

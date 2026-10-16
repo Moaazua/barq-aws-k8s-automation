@@ -1,11 +1,33 @@
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
 *.pem
 *.key
-barq-key
+.aws/
+
+# Terraform
+**/.terraform/
 *.tfstate
 *.tfstate.*
-.terraform/
-terraform.tfvars
+*.tfvars
+*.tfplan
+crash.log
+.terraform.lock.hcl.backup
+
+# Ansible
 *.retry
 
-# Ansible (generated inventory contains instance IPs)
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# SSH
+.ssh/
+
+# IDE
+.vscode/
 ansible/inventory/hosts.ini
+
+barq-key
