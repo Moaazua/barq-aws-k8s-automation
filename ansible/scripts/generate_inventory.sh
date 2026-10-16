@@ -10,7 +10,7 @@ set -euo pipefail
 
 ANSIBLE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TF_DIR="${TF_DIR:-$ANSIBLE_DIR/../terraform/root}"
-KEY="${BARQ_SSH_KEY:-~/.ssh/barq-k8s-key.pem}"
+KEY="${BARQ_SSH_KEY:-$HOME/.ssh/barq-k8s-key.pem}"
 SSH_USER="${SSH_USER:-ubuntu}"
 OUT="$ANSIBLE_DIR/inventory/hosts.ini"
 
