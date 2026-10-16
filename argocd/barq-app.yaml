@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: barq
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Moaazua/barq-aws-k8s-automation.git
+    targetRevision: habiba
+    path: k8s
+    directory:
+      recurse: true
+      # Secrets never come from Git: app-secret is created manually in the cluster
+      exclude: "app-secret.example.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
