@@ -5,9 +5,13 @@ on:
   push:
     branches: [moaaz]
     paths:
+      - 'app/**'
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - 'tests/**'
       - '.github/workflows/cd.yml'
   workflow_dispatch:
-
+  
 permissions:
   contents: write
 
