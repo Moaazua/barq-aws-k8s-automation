@@ -24,6 +24,10 @@ spec:
             - configMapRef:
                 name: app-config
           env:
+            - name: INSTANCE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
