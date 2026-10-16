@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: barq-app
-          image: moaazessam95/barq-app:1.0
+          image: habibaeteam/barq-app:sha-55f327f
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
