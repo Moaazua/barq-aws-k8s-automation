@@ -2,6 +2,10 @@
 name: CD - GitOps
 
 on:
+  push:
+    branches: [moaaz]
+    paths:
+      - '.github/workflows/cd.yml'
   workflow_dispatch:
 
 permissions:
