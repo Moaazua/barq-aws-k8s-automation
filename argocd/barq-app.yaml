@@ -19,5 +19,9 @@ spec:
     namespace: default
 
   syncPolicy:
+    automated:
+      enabled: true
+      prune: false
+      selfHeal: true
     syncOptions:
       - Prune=false
