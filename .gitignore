@@ -28,3 +28,4 @@ __pycache__/
 
 # IDE
 .vscode/
+ansible/inventory/hosts.ini

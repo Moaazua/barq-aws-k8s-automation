@@ -1,0 +1,63 @@
+---
+- name: Preflight (fresh EC2 instances)
+  hosts: k8s
+  gather_facts: false
+  tasks:
+    - name: Wait for SSH to become available
+      ansible.builtin.wait_for_connection:
+        timeout: 300
+
+    - name: Wait for cloud-init to finish (avoids apt lock errors)
+      ansible.builtin.command: cloud-init status --wait
+      changed_when: false
+      failed_when: false
+
+- name: Prepare all nodes
+  hosts: k8s
+  roles:
+    - common
+    - containerd
+    - kube_packages
+
+- name: Initialize control plane
+  hosts: control_plane
+  roles:
+    - control_plane
+
+- name: Join workers
+  hosts: workers
+  roles:
+    - worker
+
+- name: Verify cluster
+  hosts: control_plane
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Wait for both Kubernetes nodes to register
+      ansible.builtin.command: kubectl get nodes --no-headers
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: registered_nodes
+      until: registered_nodes.rc == 0 and (registered_nodes.stdout_lines | length) == 2
+      retries: 30
+      delay: 10
+      changed_when: false
+
+    - name: Wait for both Kubernetes nodes to become Ready
+      ansible.builtin.command: kubectl wait --for=condition=Ready nodes --all --timeout=300s
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      changed_when: false
+
+    - name: Show nodes
+      ansible.builtin.command: kubectl get nodes -o wide
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: nodes
+      changed_when: false
+
+    - name: Print nodes
+      ansible.builtin.debug:
+        var: nodes.stdout_lines

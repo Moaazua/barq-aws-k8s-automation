@@ -25,5 +25,5 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - REPLACE_WITH_WORKER_NODE_NAME
+                - k8s-worker1
                 
