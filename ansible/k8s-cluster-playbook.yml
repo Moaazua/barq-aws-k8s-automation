@@ -1,4 +1,5 @@
-# 1) Preflight: استنى SSH و cloud-init (EC2 جديد)
+
+# 1) Preflight: Wait for SSH and cloud-init on new EC2 instances
 - name: Preflight
   hosts: k8s
   gather_facts: false
@@ -6,12 +7,13 @@
     - name: Wait for SSH
       ansible.builtin.wait_for_connection:
         timeout: 300
+
     - name: Wait for cloud-init (avoids apt lock errors)
       ansible.builtin.command: cloud-init status --wait
       changed_when: false
       failed_when: false
 
-# 2) تجهيز كل الـ nodes
+# 2) Prepare all Kubernetes nodes
 - name: Prepare all nodes
   hosts: k8s
   handlers:
@@ -24,19 +26,19 @@
     - ansible.builtin.import_tasks: tasks/containerd.yml
     - ansible.builtin.import_tasks: tasks/kube_packages.yml
 
-# 3) تهيئة الـ control plane
+# 3) Initialize the Kubernetes control plane
 - name: Initialize control plane
   hosts: control_plane
   tasks:
     - ansible.builtin.import_tasks: tasks/control_plane.yml
 
-# 4) انضمام الـ worker
+# 4) Join worker nodes to the Kubernetes cluster
 - name: Join workers
   hosts: workers
   tasks:
     - ansible.builtin.import_tasks: tasks/worker.yml
 
-# 5) التحقق
+# 5) Verify the Kubernetes cluster
 - name: Verify cluster
   hosts: control_plane
   tasks:
