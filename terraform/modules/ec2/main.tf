@@ -1,25 +1,11 @@
-########################################
-# Find the latest Ubuntu 24.04 LTS AMI #
-########################################
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"]
+# AMI pinned to prevent unexpected EC2
+# replacement when a newer AMI appears.
 
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
 ################################
 # Kubernetes Control Plane EC2 #
 ################################
 resource "aws_instance" "control_plane" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-04de259f26cbf4c1e"
   instance_type = var.control_plane_instance_type
 
   subnet_id                   = var.public_subnet_id
@@ -44,11 +30,12 @@ resource "aws_instance" "control_plane" {
     Role = "control-plane"
   }
 }
+
 #########################
 # Kubernetes Worker EC2 #
 #########################
 resource "aws_instance" "worker" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-04de259f26cbf4c1e"
   instance_type = var.worker_instance_type
 
   subnet_id                   = var.public_subnet_id
