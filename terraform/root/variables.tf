@@ -67,3 +67,9 @@ variable "db_password" {
   sensitive   = true
 }
 
+variable "elasticache_auth_token" {
+  description = "ElastiCache Redis AUTH token"
+  type        = string
+  sensitive   = true
+}
+

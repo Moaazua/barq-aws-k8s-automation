@@ -76,3 +76,17 @@ resource "local_file" "ansible_inventory" {
 
   file_permission = "0600"
 }
+
+######################################
+# ElastiCache Module
+######################################
+
+module "elasticache" {
+  source = "../modules/elasticache"
+
+  private_subnet_ids = module.vpc.private_db_subnet_ids
+
+  security_group_id = module.security_groups.elasticache_sg_id
+
+  auth_token = var.elasticache_auth_token
+}

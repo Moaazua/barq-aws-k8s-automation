@@ -59,3 +59,13 @@ output "worker_public_ip" {
 output "worker_private_ip" {
   value = module.ec2.worker_private_ip
 }
+
+output "elasticache_endpoint" {
+  description = "ElastiCache Redis primary endpoint"
+  value       = module.elasticache.primary_endpoint
+}
+
+output "elasticache_port" {
+  description = "ElastiCache Redis port"
+  value       = module.elasticache.port
+}

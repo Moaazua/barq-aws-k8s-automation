@@ -12,3 +12,9 @@ output "rds_sg_id" {
   description = "Security Group ID for RDS PostgreSQL"
   value       = aws_security_group.rds.id
 }
+
+#######################################################################
+output "elasticache_sg_id" {
+  description = "Security Group ID for ElastiCache"
+  value       = aws_security_group.elasticache.id
+}

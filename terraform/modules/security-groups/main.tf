@@ -146,3 +146,26 @@ resource "aws_vpc_security_group_ingress_rule" "worker_nodeport" {
 
   description = "Allow BARQ application access via NodePort"
 }
+###################################################################
+# ElastiCache Security Group
+resource "aws_security_group" "elasticache" {
+  name        = "barq-elasticache-sg"
+  description = "Security group for BARQ ElastiCache Redis"
+  vpc_id      = var.vpc_id
+
+  tags = {
+    Name = "barq-elasticache-sg"
+  }
+}
+
+# Allow Redis traffic from Kubernetes Worker only
+resource "aws_vpc_security_group_ingress_rule" "elasticache_redis" {
+  security_group_id            = aws_security_group.elasticache.id
+  referenced_security_group_id = aws_security_group.worker.id
+
+  from_port   = 6379
+  to_port     = 6379
+  ip_protocol = "tcp"
+
+  description = "Allow Redis traffic from Kubernetes Worker"
+}
