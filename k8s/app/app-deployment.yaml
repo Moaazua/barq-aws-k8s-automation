@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: barq-app
   namespace: default
+  annotations:
+    barq.dev/cd-test: "2026-10-18"
 spec:
   replicas: 2
   selector:
